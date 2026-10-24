@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>مركز الرسائل</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b1220; --panel:#111c2e; --line:#26364f; --text:#edf3ff; --muted:#a7b6cc; --accent:#68a5ff; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, Arial, sans-serif; background: radial-gradient(circle at top, #172846, var(--bg) 55%); color:var(--text); min-height:100vh; padding:24px 14px; }
+    main { max-width:650px; margin:0 auto; }
+    .card { background:rgba(17,28,46,.96); border:1px solid var(--line); border-radius:20px; padding:24px; box-shadow:0 18px 60px #0005; }
+    h1 { margin:0 0 8px; font-size:1.65rem; }
+    .sub { color:var(--muted); line-height:1.7; margin:0 0 22px; }
+    label { display:block; font-weight:650; margin:17px 0 8px; }
+    input, textarea { width:100%; border:1px solid #344761; border-radius:12px; background:#0a1322; color:var(--text); padding:13px 14px; font:inherit; outline:none; }
+    input:focus, textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px #68a5ff22; }
+    textarea { min-height:135px; resize:vertical; }
+    .row { display:flex; gap:10px; align-items:center; justify-content:space-between; color:var(--muted); font-size:.88rem; margin-top:7px; }
+    button { border:0; border-radius:12px; padding:13px 18px; font:inherit; font-weight:750; cursor:pointer; }
+    .primary { width:100%; margin-top:20px; background:var(--accent); color:#071326; }
+    .secondary { background:#24344c; color:var(--text); }
+    button:disabled { opacity:.6; cursor:not-allowed; }
+    .notice { border:1px solid #66552c; background:#2b2517; color:#ffe7ad; padding:13px 14px; border-radius:12px; line-height:1.65; margin:18px 0; font-size:.92rem; }
+    .status { display:none; margin-top:16px; padding:12px 14px; border-radius:12px; line-height:1.6; }
+    .status.show { display:block; }
+    .status.error { background:#351b24; border:1px solid #78364a; }
+    .status.ok { background:#163327; border:1px solid #2b7755; }
+    .foot { color:var(--muted); font-size:.86rem; line-height:1.7; margin-top:18px; }
+    code { direction:ltr; unicode-bidi:embed; background:#0a1322; padding:2px 5px; border-radius:5px; }
+  </style>
+</head>
+<body>
+<main>
+  <section class="card">
+    <h1>مركز الرسائل 📩</h1>
+    <p class="sub">واجهة بسيطة لإرسال الرسائل النصية عبر مزوّد SMS يتم إعداده لاحقًا.</p>
+    <div class="notice">
+      <strong>مهم:</strong> هذه نسخة واجهة جاهزة وليست خدمة إرسال مفعّلة بعد. لن تُرسل رسالة فعلية حتى تربطها بخادم ومزوّد SMS موثوق. لا تدخل بيانات حساسة هنا.
+    </div>
+    <form id="smsForm">
+      <label for="phone">رقم المستلم</label>
+      <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+20 1XXXXXXXXX" required>
+      <label for="message">نص الرسالة</label>
+      <textarea id="message" name="message" maxlength="1000" placeholder="اكتب رسالتك هنا..." required></textarea>
+      <div class="row"><span>استخدم الرسائل بموافقة المستلم وبما يتوافق مع القوانين.</span><span id="count">0/1000</span></div>
+      <button class="primary" type="submit">تجربة الإرسال</button>
+    </form>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <p class="foot">للتفعيل الحقيقي: أنشئ خادمًا آمنًا يرسل الطلب إلى مزوّد SMS رسمي. احتفظ بمفتاح API على الخادم فقط، وليس داخل ملفات المتصفح. اسم المرسل وإمكانية إخفاء الرقم يعتمدان على المزوّد وشبكة المستلم.</p>
+  </section>
+</main>
+<script>
+  const form = document.getElementById('smsForm');
+  const message = document.getElementById('message');
+  const count = document.getElementById('count');
+  const statusBox = document.getElementById('status');
+  message.addEventListener('input', () => count.textContent = `${message.value.length}/1000`);
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    statusBox.className = 'status show error';
+    statusBox.textContent = 'لم تُرسل رسالة فعلية: واجهة الموقع جاهزة، لكن لم يتم ربط مزوّد SMS بعد.';
+  });
+</script>
+</body>
+</html>
